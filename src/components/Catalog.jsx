@@ -4,7 +4,6 @@ import { PiShoppingCartThin } from "react-icons/pi";
 const Catalog = () => {
     return (  
         <>
-            <CustomNavbar />
             <div className="container">
             
                 <h1 className="mt-3"><strong>Catálogo</strong></h1>

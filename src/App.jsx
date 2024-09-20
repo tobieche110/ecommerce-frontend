@@ -1,20 +1,57 @@
-import { useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Catalog from "./components/Catalog";
-import 'bootstrap/dist/css/bootstrap.min.css';
-import './App.css';
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./App.css";
 import Cart from "./components/Cart";
+import CustomNavbar from "./components/CustomNavbar";
+import { useAuth } from "./components/contexts/AuthContext";
+import { Navigate } from "react-router-dom";
+import { ProtectedRoute } from "./components/ProtectedRoute";
+import Logout from "./components/Logout";
 
 function App() {
+    const { isLogged } = useAuth();
+
     return (
         <>
+            {isLogged && <CustomNavbar />}
             <Routes>
-                <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
-                <Route path="/catalog" element={<Catalog />} />
-                <Route path="/cart" element={<Cart />} />
+                <Route
+                    path="/login"
+                    element={isLogged ? <Navigate to="/catalog" /> : <Login />}
+                />
+                <Route
+                    path="/register"
+                    element={
+                        isLogged ? <Navigate to="/catalog" /> : <Register />
+                    }
+                />
+                <Route
+                    path="/logout"
+                    element={
+                        <ProtectedRoute>
+                            <Logout />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/catalog"
+                    element={
+                        <ProtectedRoute>
+                            <Catalog />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/cart"
+                    element={
+                        <ProtectedRoute>
+                            <Cart />
+                        </ProtectedRoute>
+                    }
+                />
             </Routes>
         </>
     );

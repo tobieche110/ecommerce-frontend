@@ -29,7 +29,7 @@ const CustomNavbar = () => {
                                 title="Mi cuenta"
                                 id="basic-nav-dropdown"
                             >
-                                <NavDropdown.Item href="#logout">
+                                <NavDropdown.Item as={Link} to={"/logout"}>
                                     Cerrar sesión
                                 </NavDropdown.Item>
                             </NavDropdown>

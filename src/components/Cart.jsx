@@ -34,7 +34,6 @@ const Cart = () => {
 
     return (
         <>
-            <CustomNavbar />
             <div className="container">
                 <h1 className="mt-3">
                     <strong>Tu carrito</strong>
