@@ -1,15 +1,12 @@
-import CustomNavbar from "./CustomNavbar";
 import { Card, ListGroup } from "react-bootstrap";
 import { MdDelete } from "react-icons/md";
 import AddRemoveStockButton from "./AddRemoveStockButton";
+import { CartContext } from "./contexts/CartContext";
+import { useContext } from "react";
 
 const Cart = () => {
-    const products = [
-        { name: "Producto 1", price: "$10.00", quantity: 1 },
-        { name: "Producto 2", price: "$20.00", quantity: 2 },
-        { name: "Producto 3", price: "$30.00", quantity: 3 },
-        { name: "Producto 4", price: "$30.00", quantity: 3 },
-    ];
+    const products = useContext(CartContext).cart;
+    const { calculateTotalProducts, removeProductFromCart } = useContext(CartContext);
 
     // Calcula el precio total de los productos en el carrito
     const calculateTotalPrice = () => {
@@ -21,10 +18,6 @@ const Cart = () => {
             .toFixed(2);
     };
 
-    // Calcula la cantidad total de productos en el carrito
-    const calculateTotalProducts = () => {
-        return products.reduce((total, product) => total + product.quantity, 0);
-    };
 
     //Calcula el precio total de un producto (precio * cantidad)
     const calculateTotalProductPrice = (product) => {
@@ -55,12 +48,15 @@ const Cart = () => {
                                             </Card.Title>
                                             <div className="d-flex align-items-center">
                                                 <AddRemoveStockButton
-                                                    quantity={product.quantity}
+                                                    product={product}
                                                 />
                                                 <Card.Text className="mb-0 px-5">
                                                     {calculateTotalProductPrice(product)}
                                                 </Card.Text>
-                                                <MdDelete className="delete-button" />
+                                                <MdDelete 
+                                                    className="delete-button" 
+                                                    onClick={() => removeProductFromCart(product.id)} 
+                                                />
                                             </div>
                                         </div>
                                     </Card.Body>
@@ -88,7 +84,10 @@ const Cart = () => {
                                     </Card.Text>
                                 </div>
                                 <div className="d-flex justify-content-center">
-                                    <button className="btn btn-primary w-100">
+                                    <button 
+                                        className="btn btn-primary w-100"
+                                        disabled={calculateTotalProducts() <= 0}
+                                    >
                                         <strong>Comprar</strong>
                                     </button>
                                 </div>

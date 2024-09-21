@@ -2,8 +2,12 @@ import React from "react";
 import { Navbar, Nav, Container, NavDropdown } from "react-bootstrap";
 import { PiShoppingCartThin } from "react-icons/pi";
 import { Link } from "react-router-dom";
+import { CartContext } from "./contexts/CartContext";
+import { useContext } from "react";
 
 const CustomNavbar = () => {
+    const { cart, calculateTotalProducts } = useContext(CartContext);
+
     return (
         <Navbar bg="dark" variant="dark" expand="lg">
             <Container>
@@ -23,6 +27,11 @@ const CustomNavbar = () => {
                         <Nav.Link as={Link} to="/cart">
                             Carrito{" "}
                             <PiShoppingCartThin style={{ fontSize: "1.5em" }} />
+                            {calculateTotalProducts() > 0 && (
+                                <span style={{ fontSize: "0.75em" }}>
+                                    ({calculateTotalProducts()})
+                                </span>
+                            )}
                         </Nav.Link>
                         <Nav>
                             <NavDropdown
