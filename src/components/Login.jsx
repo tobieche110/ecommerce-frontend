@@ -16,7 +16,7 @@ const Login = () => {
     const [error, setError] = useState(null);
 
     const navigate = useNavigate();
-    const { setIsLogged, setUserRole, setUserName } = useAuth();
+    const { setIsLogged, setUserRole, setUserName, setUserId } = useAuth();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -47,9 +47,17 @@ const Login = () => {
                 expires: new Date(decoded.exp * 1000),
             });
 
+            // Guardar el id de usuario en las cookies
+            cookies.set("userId", decoded.id, {
+                expires: new Date(decoded.exp * 1000),
+            });
+
             setUserRole(decoded.role);
             setUserName(username);
+            setUserId(decoded.id);
+
             setIsLogged(true);
+            window.location.reload();
             navigate("/catalog");
         } else {
             setError("Error en el servidor");

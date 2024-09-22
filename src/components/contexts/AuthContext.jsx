@@ -9,6 +9,7 @@ export function AuthProvider({ children }) {
     const [isLogged, setIsLogged] = useState(!!cookies.get("token"));
     const [userRole, setUserRole] = useState("");
     const [username, setUserName] = useState("");
+    const [userId, setUserId] = useState(0);
     const { setCart } = useContext(CartContext);
 
     // Verificar si el usuario está autenticado al cargar la página
@@ -16,12 +17,16 @@ export function AuthProvider({ children }) {
         const token = cookies.get("token");
         setUserName(cookies.get("username"));
         setUserRole(cookies.get("role"));
+        setUserId(cookies.get("userId"));
         if (token) setIsLogged(true);
     }, []);
 
     const logout = () => {
         cookies.remove("token"); // Eliminar el token de las cookies
         cookies.remove("cart"); // Eliminar el carrito de las cookies
+        cookies.remove("role"); // Eliminar el rol de las cookies
+        cookies.remove("username"); // Eliminar el nombre de usuario de las cookies
+        cookies.remove("userId"); // Eliminar el id de usuario de las cookies
         setCart([]); // Limpiar el carrito
         setUserRole(""); // Limpiar el rol del usuario
         setUserName(""); // Limpiar el nombre de usuario
@@ -31,7 +36,7 @@ export function AuthProvider({ children }) {
     // Crear un objeto con las funciones y valores que se compartirán
     return (
         <AuthContext.Provider
-            value={{ isLogged, setIsLogged, userRole, setUserRole, logout, username, setUserName }}
+            value={{ isLogged, setIsLogged, userRole, setUserRole, logout, username, setUserName, userId, setUserId }}
         >
             {children}
         </AuthContext.Provider>

@@ -9,6 +9,7 @@ const Logout = () => {
     useEffect(() => {
         if (logout) {
             logout();  // Llamamos a la función logout para eliminar el token y actualizar el estado
+            window.location.reload();
             navigate('/login');  // Redirigimos al login
         }
     }, [logout, navigate]);
