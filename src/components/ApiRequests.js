@@ -51,3 +51,17 @@ export const getProducts = async () => {
         return error.response.data;
     }
 };
+
+// Obtener descuentos
+export const getDiscounts = async () => {
+    try {
+        const response = await axios.get(`${url}/api/discount/all`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+        return response.data;
+    } catch (error) {
+        return error.response.data;
+    }
+};

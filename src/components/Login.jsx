@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { login } from "./ApiRequests";
 import Cookies from "universal-cookie";
 import { useAuth } from "./contexts/AuthContext";
+import { jwtDecode } from "jwt-decode";
 
 const Login = () => {
     const [username, setUsername] = useState("");
@@ -15,7 +16,7 @@ const Login = () => {
     const [error, setError] = useState(null);
 
     const navigate = useNavigate();
-    const { setIsLogged } = useAuth();
+    const { setIsLogged, setUserRole, setUserName } = useAuth();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -29,7 +30,25 @@ const Login = () => {
         if (response.error) {
             setError(response.error);
         } else if (response.token) {
-            cookies.set("token", response.token);
+            const decoded = jwtDecode(response.token);
+
+            // Guardar el token en las cookies con una fecha de expiración
+            cookies.set("token", response.token, {
+                expires: new Date(decoded.exp * 1000),
+            });
+
+            // Guardar el nombre de usuario en las cookies
+            cookies.set("username", username, {
+                expires: new Date(decoded.exp * 1000),
+            });
+
+            // Guardar el rol de usuario en las cookies
+            cookies.set("role", decoded.role, {
+                expires: new Date(decoded.exp * 1000),
+            });
+
+            setUserRole(decoded.role);
+            setUserName(username);
             setIsLogged(true);
             navigate("/catalog");
         } else {

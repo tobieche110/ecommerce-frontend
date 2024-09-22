@@ -4,9 +4,11 @@ import { PiShoppingCartThin } from "react-icons/pi";
 import { Link } from "react-router-dom";
 import { CartContext } from "./contexts/CartContext";
 import { useContext } from "react";
+import { useAuth } from "./contexts/AuthContext";
 
 const CustomNavbar = () => {
     const { cart, calculateTotalProducts } = useContext(CartContext);
+    const { username } = useAuth();
 
     return (
         <Navbar bg="dark" variant="dark" expand="lg">
@@ -17,6 +19,9 @@ const CustomNavbar = () => {
                     <Nav className="mr-auto">
                         <Nav.Link as={Link} to="/catalog">
                             Catálogo
+                        </Nav.Link>
+                        <Nav.Link as={Link} to={"/change-date"}>
+                            Cambiar fecha del sistema
                         </Nav.Link>
                         <Nav.Link href="#about">Gestionar Productos</Nav.Link>
                         <Nav.Link href="#services">
@@ -35,7 +40,7 @@ const CustomNavbar = () => {
                         </Nav.Link>
                         <Nav>
                             <NavDropdown
-                                title="Mi cuenta"
+                                title={`Bienvenido, ${username}`}
                                 id="basic-nav-dropdown"
                             >
                                 <NavDropdown.Item as={Link} to={"/logout"}>

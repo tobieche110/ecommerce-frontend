@@ -9,6 +9,7 @@ import CustomNavbar from "./components/CustomNavbar";
 import { useAuth } from "./components/contexts/AuthContext";
 import { Navigate } from "react-router-dom";
 import { ProtectedRoute } from "./components/ProtectedRoute";
+import ChangeDate from "./components/ChangeDate";
 import Logout from "./components/Logout";
 
 function App() {
@@ -52,6 +53,16 @@ function App() {
                         </ProtectedRoute>
                     }
                 />
+                <Route
+                    path="/change-date"
+                    element={
+                        <ProtectedRoute>
+                            <ChangeDate />
+                        </ProtectedRoute>
+                    }
+                />
+
+                <Route path="*" element={<Navigate to="/login" />} />
             </Routes>
         </>
     );
