@@ -56,6 +56,48 @@ export const getProducts = async () => {
     }
 };
 
+// Eliminar producto
+export const deleteProduct = async (id) => {
+    try {
+        const response = await axios.delete(`${url}/api/admin/product/delete/${id}`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        return response.data;
+    } catch (error) {
+        return error.response.data;
+    }
+};
+
+// Agregar producto
+export const addProduct = async (product) => {
+    try {
+        const response = await axios.post(`${url}/api/admin/product/add`, product, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        return response.data;
+    } catch (error) {
+        return error.response.data;
+    }
+};
+
+// Modificar producto
+export const updateProduct = async (product) => {
+    try {
+        const response = await axios.put(`${url}/api/admin/product/update`, product, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        return response.data;
+    } catch (error) {
+        return error.response.data;
+    }
+};
+
 // Obtener descuentos
 export const getDiscounts = async () => {
     try {
@@ -105,3 +147,45 @@ export const createSaleOrder = async (saleOrder) => {
         return error.response.data;
     }
 }
+
+// Obtener lista de usuarios VIP
+export const getVipUsers = async () => {
+    try {
+        const response = await axios.get(`${url}/api/admin/user/all/vip`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        return response.data;
+    } catch (error) {
+        return error.response.data;
+    }
+};
+
+// Obtener lista de usuarios que obtuvieron VIP en un mes y año específico
+export const getVipUsersByMonthAndYear = async (month, year) => {
+    try {
+        const response = await axios.get(`${url}/api/admin/user/vip/got/${year}/${month}`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        return response.data;
+    } catch (error) {
+        return error.response.data;
+    }
+};
+
+// Obtener lista de usuarios que perdieron VIP en un mes y año específico
+export const getLostVipUsersByMonthAndYear = async (month, year) => {
+    try {
+        const response = await axios.get(`${url}/api/admin/user/vip/lost/${year}/${month}`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        return response.data;
+    } catch (error) {
+        return error.response.data;
+    }
+};

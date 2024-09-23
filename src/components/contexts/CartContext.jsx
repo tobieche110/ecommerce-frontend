@@ -25,7 +25,14 @@ const CartProvider = ({ children }) => {
             (item) => item.id === product.id
         );
         if (existingProductIndex !== -1) {
-            // Si el producto ya está en el carrito, aumentar la cantidad
+            // Si el producto ya está en el carrito, verificamos si supera el stock
+            if (checkStock(product)) {
+                alert(
+                    "No hay suficiente stock disponible para seguir agregando este producto."
+                );
+                return;
+            }
+
             const updatedCart = cart.map((item, index) =>
                 index === existingProductIndex
                     ? { ...item, quantity: item.quantity + 1 }
@@ -42,6 +49,19 @@ const CartProvider = ({ children }) => {
             };
             setCart((prevCart) => [...prevCart, productItem]);
         }
+    };
+
+    // Verificar si el producto seleccionado supera el stock disponible
+    const checkStock = (product) => {
+        const productInCart = cart.find((item) => item.id === product.id);
+        const productInCatalog = product.stock;
+
+        // Si el producto ya está en el carrito y la cantidad supera el stock retornamos true
+        if (productInCart && productInCart.quantity >= productInCatalog) {
+            return true;
+        }
+        
+        return false;
     };
 
     // Agregar + 1 a la cantidad de un producto en el carrito a partir de su Id
@@ -93,6 +113,7 @@ const CartProvider = ({ children }) => {
                 removeProductFromCart,
                 setCart,
                 clearCart,
+                checkStock,
             }}
         >
             {children}

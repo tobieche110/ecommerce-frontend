@@ -49,6 +49,7 @@ const Cart = () => {
                 : calculateTotalPriceWithoutDiscount(),
             date: date,
         };
+        console.log(salesOrder);
         try {
             const response = await createSaleOrder(salesOrder);
             console.log("Orden de venta creada:", response);

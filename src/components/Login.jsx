@@ -37,21 +37,6 @@ const Login = () => {
                 expires: new Date(decoded.exp * 1000),
             });
 
-            // Guardar el nombre de usuario en las cookies
-            cookies.set("username", username, {
-                expires: new Date(decoded.exp * 1000),
-            });
-
-            // Guardar el rol de usuario en las cookies
-            cookies.set("role", decoded.role, {
-                expires: new Date(decoded.exp * 1000),
-            });
-
-            // Guardar el id de usuario en las cookies
-            cookies.set("userId", decoded.id, {
-                expires: new Date(decoded.exp * 1000),
-            });
-
             setUserRole(decoded.role);
             setUserName(username);
             setUserId(decoded.id);

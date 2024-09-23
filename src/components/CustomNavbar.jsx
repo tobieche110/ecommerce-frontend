@@ -8,7 +8,7 @@ import { useAuth } from "./contexts/AuthContext";
 
 const CustomNavbar = () => {
     const { cart, calculateTotalProducts } = useContext(CartContext);
-    const { username } = useAuth();
+    const { username, userRole } = useAuth();
 
     return (
         <Navbar bg="dark" variant="dark" expand="lg">
@@ -23,10 +23,16 @@ const CustomNavbar = () => {
                         <Nav.Link as={Link} to={"/change-date"}>
                             Cambiar fecha del sistema
                         </Nav.Link>
-                        <Nav.Link href="#about">Gestionar Productos</Nav.Link>
-                        <Nav.Link href="#services">
-                            Ver listado de clientes
-                        </Nav.Link>
+                        {userRole === "ADMIN" && (
+                            <>
+                                <Nav.Link as={Link} to={"/admin/products"}>
+                                    Gestionar Productos
+                                </Nav.Link>
+                                <Nav.Link as={Link} to={"/admin/clients"}>
+                                    Ver listados de clientes
+                                </Nav.Link>
+                            </>
+                        )}
                     </Nav>
                     <Nav className="mr-auto">
                         <Nav.Link as={Link} to="/cart">

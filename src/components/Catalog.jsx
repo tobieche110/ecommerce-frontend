@@ -8,7 +8,7 @@ const Catalog = () => {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const { addToCart } = useContext(CartContext);
+    const { addToCart, cart } = useContext(CartContext);
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -25,7 +25,11 @@ const Catalog = () => {
     }, []);
 
     if (loading) {
-        return <div className="container mt-3"><p>Cargando productos...</p></div>;
+        return (
+            <div className="container mt-3">
+                <p>Cargando productos...</p>
+            </div>
+        );
     }
 
     if (error) {
@@ -34,8 +38,13 @@ const Catalog = () => {
 
     return (
         <div className="container">
-            <h1 className="mt-3"><strong>Catálogo</strong></h1>
-            <p>En esta sección podrás encontrar todos los productos disponibles en nuestra tienda.</p>
+            <h1 className="mt-3">
+                <strong>Catálogo</strong>
+            </h1>
+            <p>
+                En esta sección podrás encontrar todos los productos disponibles
+                en nuestra tienda.
+            </p>
 
             <div className="row">
                 {products.map((product) => (
@@ -45,12 +54,27 @@ const Catalog = () => {
                                 <h5 className="card-title">{product.name}</h5>
                                 <p className="card-text">${product.price}</p>
                                 <div className="d-flex justify-content-center">
-                                    <button 
-                                        className="btn btn-primary rounded-pill"
-                                        onClick={() => addToCart(product)} // Agrega el producto al carrito
-                                    >
-                                        <PiShoppingCartThin style={{ fontSize: '1.5em' }} /> Agregar al carrito
-                                    </button>
+                                    {product.stock > 0 ? (
+                                        <button
+                                            className="btn btn-primary rounded-pill"
+                                            onClick={() => addToCart(product)} // Agrega el producto al carrito
+                                        >
+                                            <PiShoppingCartThin
+                                                style={{ fontSize: "1.5em" }}
+                                            />{" "}
+                                            Agregar al carrito
+                                        </button>
+                                    ) : (
+                                        <button
+                                            className="btn btn-primary rounded-pill"
+                                            disabled
+                                        >
+                                            <PiShoppingCartThin
+                                                style={{ fontSize: "1.5em" }}
+                                            />{" "}
+                                            Sin Stock
+                                        </button>
+                                    )}
                                 </div>
                             </div>
                         </div>

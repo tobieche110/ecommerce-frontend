@@ -36,6 +36,7 @@ const Register = () => {
             const loginResponse = await login(username, password);
             cookies.set("token", loginResponse.token);
             setIsLogged(true);
+            window.location.reload();
             navigate("/catalog");
         } else {
             setError("Error en el servidor");

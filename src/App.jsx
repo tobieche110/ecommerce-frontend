@@ -11,9 +11,11 @@ import { Navigate } from "react-router-dom";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import ChangeDate from "./components/ChangeDate";
 import Logout from "./components/Logout";
+import Products from "./components/Products";
+import ClientList from "./components/ClientList";
 
 function App() {
-    const { isLogged } = useAuth();
+    const { isLogged, userRole } = useAuth();
 
     return (
         <>
@@ -61,6 +63,27 @@ function App() {
                         </ProtectedRoute>
                     }
                 />
+
+                {userRole === "ADMIN" && (
+                    <>
+                        <Route
+                            path="/admin/products"
+                            element={
+                                <ProtectedRoute>
+                                    <Products />
+                                </ProtectedRoute>
+                            }
+                        />
+                        <Route
+                            path="/admin/clients"
+                            element={
+                                <ProtectedRoute>
+                                    <ClientList />
+                                </ProtectedRoute>
+                            }
+                        />
+                    </>
+                )}
 
                 <Route path="*" element={<Navigate to="/login" />} />
             </Routes>

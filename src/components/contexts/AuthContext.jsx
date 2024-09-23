@@ -1,6 +1,7 @@
 import { createContext, useState, useContext, useEffect } from "react";
 import Cookies from "universal-cookie";
 import { CartContext } from "./CartContext";
+import { jwtDecode } from "jwt-decode";
 
 const AuthContext = createContext();
 
@@ -15,10 +16,14 @@ export function AuthProvider({ children }) {
     // Verificar si el usuario está autenticado al cargar la página
     useEffect(() => {
         const token = cookies.get("token");
-        setUserName(cookies.get("username"));
-        setUserRole(cookies.get("role"));
-        setUserId(cookies.get("userId"));
-        if (token) setIsLogged(true);
+
+        if (token) {
+            const decodedToken = jwtDecode(token);
+            setUserName(token ? decodedToken.sub : "");
+            setUserRole(token ? decodedToken.role : "");
+            setUserId(token ? decodedToken.id : 0);
+            setIsLogged(true);
+        }
     }, []);
 
     const logout = () => {
@@ -36,7 +41,17 @@ export function AuthProvider({ children }) {
     // Crear un objeto con las funciones y valores que se compartirán
     return (
         <AuthContext.Provider
-            value={{ isLogged, setIsLogged, userRole, setUserRole, logout, username, setUserName, userId, setUserId }}
+            value={{
+                isLogged,
+                setIsLogged,
+                userRole,
+                setUserRole,
+                logout,
+                username,
+                setUserName,
+                userId,
+                setUserId,
+            }}
         >
             {children}
         </AuthContext.Provider>
