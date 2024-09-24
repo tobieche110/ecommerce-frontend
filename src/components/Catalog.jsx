@@ -1,14 +1,17 @@
-import { useContext } from "react";
+import { useContext, useState, useEffect } from "react";
 import { PiShoppingCartThin } from "react-icons/pi";
 import { CartContext } from "./contexts/CartContext";
 import { getProducts } from "./ApiRequests";
-import { useEffect, useState } from "react";
+import Toast from "react-bootstrap/Toast";
+import ToastContainer from "react-bootstrap/ToastContainer";
 
 const Catalog = () => {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const { addToCart, cart } = useContext(CartContext);
+    const [showToast, setShowToast] = useState(false);
+    const [toastMessage, setToastMessage] = useState("");
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -23,6 +26,14 @@ const Catalog = () => {
         };
         fetchProducts();
     }, []);
+
+    const handleAddToCart = (product) => {
+        const response = addToCart(product);
+        if (response) {
+            setToastMessage(`${product.name} ha sido agregado al carrito.`);
+            setShowToast(true);
+        }
+    };
 
     if (loading) {
         return (
@@ -57,7 +68,9 @@ const Catalog = () => {
                                     {product.stock > 0 ? (
                                         <button
                                             className="btn btn-primary rounded-pill"
-                                            onClick={() => addToCart(product)} // Agrega el producto al carrito
+                                            onClick={() =>
+                                                handleAddToCart(product)
+                                            }
                                         >
                                             <PiShoppingCartThin
                                                 style={{ fontSize: "1.5em" }}
@@ -81,6 +94,20 @@ const Catalog = () => {
                     </div>
                 ))}
             </div>
+
+            <ToastContainer position="bottom-end" className="p-3">
+                <Toast
+                    onClose={() => setShowToast(false)}
+                    show={showToast}
+                    delay={3000}
+                    autohide
+                >
+                    <Toast.Header>
+                        <strong className="me-auto">Notificación</strong>
+                    </Toast.Header>
+                    <Toast.Body>{toastMessage}</Toast.Body>
+                </Toast>
+            </ToastContainer>
         </div>
     );
 };

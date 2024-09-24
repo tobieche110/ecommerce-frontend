@@ -14,7 +14,7 @@ const Products = () => {
         id: "",
         name: "",
         price: "",
-        stock: "",
+        stock: 0,
     });
 
     // Obtener productos
@@ -40,7 +40,7 @@ const Products = () => {
 
     // Agregar producto a la BDD al presionar el botón
     const addProductToDB = async () => {
-        if (!newProduct.name || !newProduct.price || !newProduct.stock) {
+        if (!newProduct.name || !newProduct.price || newProduct.stock < 0) {
             alert("Todos los campos son obligatorios");
             return;
         }
@@ -57,6 +57,11 @@ const Products = () => {
 
     const deleteProductOnDB = async (index, productId) => {
         try {
+            const confirmDelete = window.confirm(
+                "¿Estás seguro de que deseas eliminar este producto?"
+            );
+            if (!confirmDelete) return;
+
             await deleteProduct(productId);
             const updatedProducts = products.filter((_, i) => i !== index);
             setProducts(updatedProducts);

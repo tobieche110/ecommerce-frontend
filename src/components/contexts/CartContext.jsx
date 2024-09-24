@@ -30,7 +30,7 @@ const CartProvider = ({ children }) => {
                 alert(
                     "No hay suficiente stock disponible para seguir agregando este producto."
                 );
-                return;
+                return false;
             }
 
             const updatedCart = cart.map((item, index) =>
@@ -49,6 +49,7 @@ const CartProvider = ({ children }) => {
             };
             setCart((prevCart) => [...prevCart, productItem]);
         }
+        return true;
     };
 
     // Verificar si el producto seleccionado supera el stock disponible
@@ -60,7 +61,7 @@ const CartProvider = ({ children }) => {
         if (productInCart && productInCart.quantity >= productInCatalog) {
             return true;
         }
-        
+
         return false;
     };
 
@@ -112,7 +113,6 @@ const CartProvider = ({ children }) => {
                 removeFromCart,
                 removeProductFromCart,
                 setCart,
-                clearCart,
                 checkStock,
             }}
         >

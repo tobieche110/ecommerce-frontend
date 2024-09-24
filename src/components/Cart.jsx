@@ -1,4 +1,4 @@
-import { Card, ListGroup } from "react-bootstrap";
+import { Card, ListGroup, Toast, ToastContainer } from "react-bootstrap";
 import { MdDelete } from "react-icons/md";
 import AddRemoveStockButton from "./AddRemoveStockButton";
 import { CartContext } from "./contexts/CartContext";
@@ -11,9 +11,9 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
+    const [showToast, setShowToast] = useState(false);
     const products = useContext(CartContext).cart;
     const clearCart = useContext(CartContext).clearCart;
-    const navigate = useNavigate();
     const userRole = useAuth().userRole;
     const userId = useAuth().userId;
     const { date } = useDate();
@@ -53,8 +53,8 @@ const Cart = () => {
         try {
             const response = await createSaleOrder(salesOrder);
             console.log("Orden de venta creada:", response);
+            setShowToast(true);
             clearCart();
-            navigate("/catalog");
         } catch (error) {
             console.error("Error al crear la orden de venta:", error);
         }
@@ -226,6 +226,20 @@ const Cart = () => {
                     </div>
                 </div>
             </div>
+
+            <ToastContainer position="bottom-end" className="p-3">
+                <Toast
+                    onClose={() => setShowToast(false)}
+                    show={showToast}
+                    delay={3000}
+                    autohide
+                >
+                    <Toast.Header>
+                        <strong className="me-auto">Notificación</strong>
+                    </Toast.Header>
+                    <Toast.Body>Orden de venta creada con éxito</Toast.Body>
+                </Toast>
+            </ToastContainer>
         </>
     );
 };

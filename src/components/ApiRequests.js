@@ -5,7 +5,7 @@ const cookies = new Cookies();
 const token = cookies.get("token");
 
 // URL de la API
-const url = "http://localhost:8080";
+const url = import.meta.env.VITE_BACKEND_URL;
 
 // Login
 export const login = async (username, password) => {
