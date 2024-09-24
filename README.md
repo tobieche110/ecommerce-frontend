@@ -1,6 +1,6 @@
 # Examen Técnico
 
-Link al backend:https://github.com/tobieche110/ecommerce-backend
+Link al backend: https://github.com/tobieche110/ecommerce-backend
 
 ## Descripción
 
